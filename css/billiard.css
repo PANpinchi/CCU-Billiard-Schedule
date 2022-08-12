@@ -1,0 +1,40 @@
+input{
+    width: 20vw;
+    height: 8vh;
+    text-align: center;
+    font-size: 4vh;
+    border: 2px solid rgb(110, 110, 110);
+    border-radius: 2em;
+}
+
+ol{
+    max-height: 60vh;
+    overflow-y: overlay;
+}
+
+li:hover{
+    background-color: #eeeeee;
+}
+
+.black {
+    color: black;
+}
+
+.green {
+    color: green;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+background: #CCCCCC;
+border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+background: transparent;
+}
