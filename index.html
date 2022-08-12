@@ -36,8 +36,22 @@
                 <div class="col-4" style="text-align: center;">
                     <h2><strong>賽程表產生器</strong></h2>
                     <hr>
-                    <button type="button" class="btn btn-primary" v-on:click.prevent="submit">產生賽程表</button>
-                    <button type="button" class="btn btn-danger" v-on:click.prevent="remove_All()">全部刪除</button>
+                    <h5 style="color: gray; text-align: left;">
+                        <strong>
+                            說明：<br>
+                            左方輸入參賽者名稱，<br>
+                            名字限制至多10個字元，<br>
+                            參賽者至多16人，<br>
+                            輸入完成後請確認所有參賽者皆完成報名，<br>
+                            點擊「產生賽程表」自動生成賽程表。<br><br>
+                            賽程表畫面點擊獲勝的參賽者可繼續晉級。<br>
+                            綠色：已獲勝的參賽者。<br>
+                            紅色：被淘汰的參賽者。<br>
+                        </strong>
+                    </h5>
+                    <div style="height: 5vh"></div>
+                    <button type="button" class="btn btn-primary" style="margin-right: 20px;" v-on:click.prevent="submit"><strong>產生賽程表</strong></button>
+                    <button type="button" class="btn btn-danger" v-on:click.prevent="remove_All()"><strong>全部刪除</strong></button>
                 </div>
             </div>
         </div>
@@ -50,55 +64,55 @@
                     <tr>
                         <td v-for="item in promotion4" colspan="16">
                             <div class="border2" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;">
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
 
                             <div class="border2" :class="[item.status]" v-else>
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td v-for="item in promotion3" colspan="8">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
 
                             <div class="border1" :class="[item.status]" v-else>
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td v-for="item in promotion2" colspan="4">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
 
                             <div class="border1" :class="[item.status]" v-else>
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td v-for="item in promotion1" colspan="2">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
 
                             <div class="border1" :class="[item.status]" v-else>
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td v-for="item in registered">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
 
                             <div class="border1" :class="[item.status]" v-else>
-                                <p class="content1">{{item.name}}</p>
+                                <p class="content1"><strong>{{item.name}}</strong></p>
                             </div>
                         </td>
                     </tr>

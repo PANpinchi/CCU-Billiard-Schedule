@@ -3,10 +3,10 @@
 }
 
 input{
-    width: 20vw;
-    height: 8vh;
+    width: 85%;
+    height: 4rem;
     text-align: center;
-    font-size: 4vh;
+    font-size: 2rem;
     border: 2px solid rgb(110, 110, 110);
     border-radius: 2em;
 }
