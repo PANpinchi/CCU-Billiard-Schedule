@@ -16,13 +16,31 @@
         <div class="container minsize" v-show="register_is_display">
             <div style="height: 10vh;"></div>
             <div class="row">
-                <div class="col-4">
+                <div class="col-4" style="text-align: center;">
+                    <h2><strong>最大參賽人數</strong></h2>
+                    <hr>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 80%;">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked v-on:click="change_people(2)">
+                        <label class="btn btn-outline-secondary" for="btnradio1"><strong>2</strong></label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-on:click="change_people(4)">
+                        <label class="btn btn-outline-secondary" for="btnradio2"><strong>4</strong></label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-on:click="change_people(8)">
+                        <label class="btn btn-outline-secondary" for="btnradio3"><strong>8</strong></label>
 
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" v-on:click="change_people(16)">
+                        <label class="btn btn-outline-secondary" for="btnradio4"><strong>16</strong></label>
+                    </div>
+                    <div style="height: 5rem;"></div>
+                    <h2><strong>建議參賽人數</strong></h2>
+                    <hr>
+                    <h3 style="color: gray;">{{suggest_people}}</h3>
                 </div>
                 <div class="col-4" style="text-align: center;">
                     <h1><strong>請輸入參賽者名稱</strong></h1>
                     <div style="height: 2vh;"></div>
-                    <input id="inp" type="text" v-model="player_name" v-on:keyup.enter="onEnter">
+                    <input id="inp" type="text" autocomplete="off" v-model="player_name" v-on:keyup.enter="onEnter">
                     <div style="height: 4vh;"></div>
                     <ol class="list-group list-group-numbered" style="text-align: left;">
                         <li class="list-group-item" :class="[item.arrColor]" v-for="item in registered" style="font-size: 25px;">
@@ -41,7 +59,7 @@
                             說明：<br>
                             左方輸入參賽者名稱，<br>
                             名字限制至多10個字元，<br>
-                            參賽者至多16人，<br>
+                            參賽者至多<span style="color: red;">{{max_people}}</span>人，<br>
                             輸入完成後請確認所有參賽者皆完成報名，<br>
                             點擊「產生賽程表」自動生成賽程表。<br><br>
                             賽程表畫面點擊獲勝的參賽者可繼續晉級。<br>
@@ -49,16 +67,19 @@
                             紅色：被淘汰的參賽者。<br>
                         </strong>
                     </h5>
-                    <div style="height: 5vh"></div>
-                    <button type="button" class="btn btn-primary" style="margin-right: 20px;" v-on:click.prevent="submit"><strong>產生賽程表</strong></button>
-                    <button type="button" class="btn btn-danger" v-on:click.prevent="remove_All()"><strong>全部刪除</strong></button>
+                    <div style="height: 2rem"></div>
+                    <button type="button" class="btn btn-primary" style="margin-right: 10px;" v-on:click.prevent="submit"><strong>產生賽程表</strong></button>
+                    <button type="button" class="btn btn-danger" style="margin-left: 10px;" v-on:click.prevent="remove_All()"><strong>全部刪除</strong></button>
                 </div>
             </div>
         </div>
 
         <!-- 賽程表 -->
         <div class="container minsize" v-show="schedule_is_display">
-            <div style="height: 2vh;"></div>
+            <div style="height: 2vh;" v-if="max_people == 16"></div>
+            <div style="height: 10vh;" v-if="max_people == 8"></div>
+            <div style="height: 20vh;" v-if="max_people == 4"></div>
+            <div style="height: 30vh;" v-if="max_people == 2"></div>
             <div class="row">
                 <table class="table table-borderless">
                     <tr>
@@ -72,7 +93,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="max_people >= 2">
                         <td v-for="item in promotion3" colspan="8">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
                                 <p class="content1"><strong>{{item.name}}</strong></p>
@@ -83,7 +104,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="max_people >= 4">
                         <td v-for="item in promotion2" colspan="4">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
                                 <p class="content1"><strong>{{item.name}}</strong></p>
@@ -94,7 +115,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="max_people >= 8">
                         <td v-for="item in promotion1" colspan="2">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
                                 <p class="content1"><strong>{{item.name}}</strong></p>
@@ -105,7 +126,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-if="max_people == 16">
                         <td v-for="item in registered">
                             <div class="border1" :class="[item.status]" v-if="item.status == 0 && item.name != '' && item.name != '空'" style="cursor: pointer;" v-on:click="win(item)">
                                 <p class="content1"><strong>{{item.name}}</strong></p>
@@ -130,6 +151,8 @@
         data: {
             player_name: '',
             registered: [],
+            max_people: 2,
+            suggest_people: '2',
             // status = 0:未比賽, 'bg-green':贏, 'bg-red':輸
             promotion1: [
                 {name: '', status: 0},
@@ -156,10 +179,31 @@
             schedule_is_display: false
         },
         methods: {
+            change_people: function(num){
+                this.max_people = num;
+
+                if(this.max_people == 2){
+                    this.suggest_people = '2';
+                }
+                else if(this.max_people == 4){
+                    this.suggest_people = '3 ~ 4';
+                }
+                else if(this.max_people == 8){
+                    this.suggest_people = '5 ~ 8';
+                }
+                else if(this.max_people == 16){
+                    this.suggest_people = '9 ~ 16';
+                }
+
+                if(this.registered.length > this.max_people){
+                    this.registered.splice(this.max_people, this.registered.length - this.max_people);
+                }
+            },
+            
             onEnter: function(){
                 if(this.player_name != ''){
-                    if(this.registered.length == 16){
-                        alert("已達上限人數 16 人 !");
+                    if(this.registered.length == this.max_people){
+                        alert("已達上限人數 "+this.max_people+" 人 !");
                         this.player_name = '';
                     }
                     else if (this.player_name.length > 10) {
@@ -191,105 +235,39 @@
                 location.reload();
             },
 
-            promote1: function(){
-                // registered -> promotion1
-                for(var i = 0; i < this.registered.length; i++){
-                    if(this.registered[i].name == '空' & i % 2 == 0){
-                        if(this.registered[i+1].name == '空'){
-                            this.registered[i].status = 'bg-red';
-                            this.registered[i+1].status = 'bg-red';
-                            this.promotion1[Math.floor(i/2)].name = this.registered[i+1].name;
-                        }
-                        else if(this.registered[i+1].name != ''){
-                            this.registered[i].status = 'bg-red';
-                            this.registered[i+1].status = 'bg-green';
-                            this.promotion1[Math.floor(i/2)].name = this.registered[i+1].name;
-                        }
-                        i++;
-                    }
-                    else if(this.registered[i].name == '空' && i % 2 == 1){
-                        if(this.registered[i-1].name != ''){
-                            this.registered[i].status = 'bg-red';
-                            this.registered[i-1].status = 'bg-green';
-                            this.promotion1[Math.floor(i/2)].name = this.registered[i-1].name;
-                        }
-                    }
+            promote: function(now, next){
+                if(next.length == 1){
+                    var last = true;
                 }
-            },
-
-            promote2: function(){
-                // promotion1 -> promotion2
-                for(var i = 0; i < this.promotion1.length; i++){
-                    if(this.promotion1[i].name == '空' && i % 2 == 0){
-                        if(this.promotion1[i+1].name == '空'){
-                            this.promotion1[i].status = 'bg-red';
-                            this.promotion1[i+1].status = 'bg-red';
-                            this.promotion2[Math.floor(i/2)].name = this.promotion1[i+1].name;
-                        }
-                        else if(this.promotion1[i+1].name != ''){
-                            this.promotion1[i].status = 'bg-red';
-                            this.promotion1[i+1].status = 'bg-green';
-                            this.promotion2[Math.floor(i/2)].name = this.promotion1[i+1].name;
-                        }
-                        i++;
-                    }
-                    else if(this.promotion1[i].name == '空' && i % 2 == 1){
-                        if(this.promotion1[i-1].name != ''){
-                            this.promotion1[i].status = 'bg-red';
-                            this.promotion1[i-1].status = 'bg-green';
-                            this.promotion2[Math.floor(i/2)].name = this.promotion1[i-1].name;
-                        }
-                    }
+                else{
+                    var last = false;
                 }
-            },
-
-            promote3: function(){
-                for(var i = 0; i < this.promotion2.length; i++){
-                    if(this.promotion2[i].name == '空' && i % 2 == 0){
-                        if(this.promotion2[i+1].name == '空'){
-                            this.promotion2[i].status = 'bg-red';
-                            this.promotion2[i+1].status = 'bg-red';
-                            this.promotion3[Math.floor(i/2)].name = this.promotion2[i+1].name;
+                // now -> next
+                for(var i = 0; i < now.length; i++){
+                    if(now[i].name == '空' & i % 2 == 0){
+                        if(now[i+1].name == '空'){
+                            now[i].status = 'bg-red';
+                            now[i+1].status = 'bg-red';
+                            next[Math.floor(i/2)].name = now[i+1].name;
                         }
-                        else if(this.promotion2[i+1].name != ''){
-                            this.promotion2[i].status = 'bg-red';
-                            this.promotion2[i+1].status = 'bg-green';
-                            this.promotion3[Math.floor(i/2)].name = this.promotion2[i+1].name;
-                        }
-                        i++;
-                    }
-                    else if(this.promotion2[i].name == '空' && i % 2 == 1){
-                        if(this.promotion2[i-1].name != ''){
-                            this.promotion2[i].status = 'bg-red';
-                            this.promotion2[i-1].status = 'bg-green';
-                            this.promotion3[Math.floor(i/2)].name = this.promotion2[i-1].name;
-                        }
-                    }
-                }
-            },
-
-            promote4: function(){
-                for(var i = 0; i < this.promotion3.length; i++){
-                    if(this.promotion3[i].name == '空' && i % 2 == 0){
-                        if(this.promotion3[i+1].name == '空'){
-                            this.promotion3[i].status = 'bg-red';
-                            this.promotion3[i+1].status = 'bg-red';
-                            this.promotion4[Math.floor(i/2)].name = this.promotion3[i+1].name;
-                        }
-                        else if(this.promotion3[i+1].name != ''){
-                            this.promotion3[i].status = 'bg-red';
-                            this.promotion3[i+1].status = 'bg-green';
-                            this.promotion4[Math.floor(i/2)].name = this.promotion3[i+1].name;
-                            this.promotion4[Math.floor(i/2)].status = 'bg-yellow';
+                        else if(now[i+1].name != ''){
+                            now[i].status = 'bg-red';
+                            now[i+1].status = 'bg-green';
+                            next[Math.floor(i/2)].name = now[i+1].name;
+                            if(last){
+                                next[Math.floor(i/2)].status = 'bg-yellow';
+                            }
                         }
                         i++;
                     }
-                    else if(this.promotion3[i].name == '空' && i % 2 == 1){
-                        if(this.promotion3[i-1].name != ''){
-                            this.promotion3[i].status = 'bg-red';
-                            this.promotion3[i-1].status = 'bg-green';
-                            this.promotion4[Math.floor(i/2)].name = this.promotion3[i-1].name;
-                            this.promotion4[Math.floor(i/2)].status = 'bg-yellow';
+                    else if(now[i].name == '空' && i % 2 == 1){
+                        if(now[i-1].name != ''){
+                            now[i].status = 'bg-red';
+                            now[i-1].status = 'bg-green';
+                            next[Math.floor(i/2)].name = now[i-1].name;
+                            if(last){
+                                next[Math.floor(i/2)].status = 'bg-yellow';
+                            }
                         }
                     }
                 }
@@ -400,7 +378,7 @@
                         this.promotion3[Math.floor(index/2)].name = this.promotion2[index].name;
 
                         /* 若為空則自動晉級 */
-                        this.promote4();
+                        this.promote(this.promotion3, this.promotion4);
                     }
                     else if(num == 1){
                         // 左邊勝利
@@ -417,8 +395,8 @@
                         this.promotion2[Math.floor(index/2)].name = this.promotion1[index].name;
 
                         /* 若為空則自動晉級 */
-                        this.promote3();
-                        this.promote4();
+                        this.promote(this.promotion2, this.promotion3);
+                        this.promote(this.promotion3, this.promotion4);
                     }
                     else if(num == 0){
                         // 左邊勝利
@@ -435,9 +413,9 @@
                         this.promotion1[Math.floor(index/2)].name = this.registered[index].name;
 
                         /* 若為空則自動晉級 */
-                        this.promote2();
-                        this.promote3();
-                        this.promote4();
+                        this.promote(this.promotion1, this.promotion2);
+                        this.promote(this.promotion2, this.promotion3);
+                        this.promote(this.promotion3, this.promotion4);
                     }
                 }
             },
@@ -460,7 +438,7 @@
                     this.schedule_is_display = true;
 
                     /* 補足16人 */
-                    while(this.registered.length < 16){
+                    while(this.registered.length < this.max_people){
                         this.registered.push({name: '空', arrColor: 'green', confirm: false, status: 0});
                     }
 
@@ -470,17 +448,43 @@
                     });
 
                     /* 若為空則自動晉級 */
-                    // promotion1 -> promotion2
-                    this.promote1();
-
-                    // promotion1 -> promotion2
-                    this.promote2();
-
-                    // promotion2 -> promotion3
-                    this.promote3();
-
-                    // promotion3 -> promotion4
-                    this.promote4();
+                    if(this.max_people == 16){
+                        // registered -> promotion1
+                        this.promote(this.registered, this.promotion1);
+                        // promotion1 -> promotion2
+                        this.promote(this.promotion1, this.promotion2);
+                        // promotion2 -> promotion3
+                        this.promote(this.promotion2, this.promotion3);
+                        // promotion3 -> promotion4
+                        this.promote(this.promotion3, this.promotion4);
+                    }
+                    else if(this.max_people == 8){
+                        for(var i = 0; i < this.promotion1.length; i++){
+                            this.promotion1[i].name = this.registered[i].name;
+                        }
+                        // promotion1 -> promotion2
+                        this.promote(this.promotion1, this.promotion2);
+                        // promotion2 -> promotion3
+                        this.promote(this.promotion2, this.promotion3);
+                        // promotion3 -> promotion4
+                        this.promote(this.promotion3, this.promotion4);
+                    }
+                    else if(this.max_people == 4){
+                        for(var i = 0; i < this.promotion2.length; i++){
+                            this.promotion2[i].name = this.registered[i].name;
+                        }
+                        // promotion2 -> promotion3
+                        this.promote(this.promotion2, this.promotion3);
+                        // promotion3 -> promotion4
+                        this.promote(this.promotion3, this.promotion4);
+                    }
+                    else if(this.max_people == 2){
+                        for(var i = 0; i < this.promotion3.length; i++){
+                            this.promotion3[i].name = this.registered[i].name;
+                        }
+                        // promotion3 -> promotion4
+                        this.promote(this.promotion3, this.promotion4);
+                    }
                 }
                 else{
                     alert("還有參賽者尚未確認喔 ！");

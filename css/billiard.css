@@ -44,7 +44,7 @@ td{
 .border1:before{
     content: '';
     position: absolute;
-    width: 5px;
+    width: 4px;
     height: 18px;
     background-color: black;
     z-index: -1;
