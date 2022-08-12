@@ -13,11 +13,8 @@
     <h1>安安</h1>
     <div id="app">
         <ol class="list-group list-group-numbered" style="text-align: left;">
-            <li class="list-group-item" :class="[item.arrColor]" v-for="item in registered" style="font-size: 25px;">
-                <span :class="[item.arrColor]" style="font-size: 25px;"><strong>{{item.name}}</strong></span>
-                <button type="button" class="btn btn-danger" style="float: right" v-if="item.confirm" v-on:click.prevent="remove_item(item)">刪除</button>
-                <button type="button" class="btn btn-success" style="float: right; margin-right: 10px;" v-if="item.confirm" v-on:click.prevent="confirm_item(item)">確認</button>
-                <button type="button" class="btn btn-secondary" style="float: right;" v-else v-on:click.prevent="confirm_item(item)">取消</button>
+            <li class="list-group-item" v-for="item in registered" style="font-size: 25px;">
+                <span style="font-size: 25px;"><strong>{{item.name}}</strong></span>
             </li>
         </ol>
     </div>
