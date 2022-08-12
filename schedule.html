@@ -11,9 +11,18 @@
 </head>
 <body>
     <h1>安安</h1>
+    <div id="app">
+        {{registered}}
+    </div>
 </body>
 </html>
 
 <script>
-
+    var app = new Vue({
+        el: '#app',
+        data: {
+            player_name: '',
+            registered: $route.query.registered
+        },
+    });
 </script>

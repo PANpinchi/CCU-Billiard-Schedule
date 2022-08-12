@@ -95,7 +95,7 @@
                         url : "schedule.html",
                         data:{"registered": this.registered},
                         success : function(){
-                            location.href = "schedule.html";
+                            location.href = "schedule.html?registered="+this.registered;
                         }
                     })
                 }
