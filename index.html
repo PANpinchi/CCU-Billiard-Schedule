@@ -92,12 +92,12 @@
                 }
                 else if(check_confirm){
                     $.ajax({
-                        url : "schedule.html",
+                        url : "schedule",
                         type: "post",
                         data:{"registered": this.registered},  
                         dataType: "json",
                         success : function(data){
-                            location.href = "schedule.html";
+                            location.href = "schedule";
                         }
                     })
                 }
