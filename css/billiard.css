@@ -1,3 +1,7 @@
+.minsize{
+    min-width: 1200px;
+}
+
 input{
     width: 20vw;
     height: 8vh;
@@ -16,6 +20,64 @@ li:hover{
     background-color: #eeeeee;
 }
 
+table{
+    table-layout: fixed;
+    text-align: center;
+}
+
+td{
+    width: auto;
+    padding: 10%;
+    word-break:break-all;
+    z-index: 2;
+}
+
+.border1{
+    position: relative;
+    width: 100%;
+    height: 15vh;
+    border: 2px solid black;
+    border-radius: 1em;
+}
+
+.border1:before{
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 18px;
+    background-color: black;
+    z-index: -1;
+    bottom: 101%;
+}
+
+.border2{
+    position: relative;
+    width: 100%;
+    height: 15vh;
+    border: 2px solid black;
+    border-radius: 1em;
+}
+
+.content1{
+    width: 100%;
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bg-green{
+    background-color: greenyellow;
+}
+
+.bg-red{
+    background-color: rgb(255, 80, 80);
+}
+
+.bg-yellow{
+    background-color: rgb(255, 255, 80);
+}
+
 .black {
     color: black;
 }
@@ -31,10 +93,10 @@ li:hover{
 }
 
 ::-webkit-scrollbar-thumb {
-background: #CCCCCC;
-border-radius: 6px;
+    background: #CCCCCC;
+    border-radius: 6px;
 }
 
 ::-webkit-scrollbar-track {
-background: transparent;
+    background: transparent;
 }

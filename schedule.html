@@ -13,8 +13,8 @@
     <h1>安安</h1>
     <div id="app">
         <ol class="list-group list-group-numbered" style="text-align: left;">
-            <li class="list-group-item" v-for="item in registered" style="font-size: 25px;">
-                <span style="font-size: 25px;"><strong>{{item.name}}</strong></span>
+            <li class="list-group-item" style="font-size: 25px;">
+                <span style="font-size: 25px;"><strong>{{registered}}</strong></span>
             </li>
         </ol>
     </div>
@@ -26,7 +26,7 @@
         el: '#app',
         data: {
             player_name: '',
-            registered: this.$route.query.registered
+            registered: location.href
         },
     });
 </script>
