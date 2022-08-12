@@ -6,8 +6,8 @@ input{
     width: 85%;
     height: 4rem;
     text-align: center;
-    font-size: 2rem;
     font-weight: bold;
+    font-size: 2rem;
     border: 2px solid rgb(110, 110, 110);
     border-radius: 2em;
 }

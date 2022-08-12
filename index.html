@@ -22,7 +22,7 @@
                 <div class="col-4" style="text-align: center;">
                     <h1><strong>請輸入參賽者名稱</strong></h1>
                     <div style="height: 2vh;"></div>
-                    <input type="text" v-model="player_name" v-on:keyup.enter="onEnter" autofocus>
+                    <input id="inp" type="text" v-model="player_name" v-on:keyup.enter="onEnter">
                     <div style="height: 4vh;"></div>
                     <ol class="list-group list-group-numbered" style="text-align: left;">
                         <li class="list-group-item" :class="[item.arrColor]" v-for="item in registered" style="font-size: 25px;">
