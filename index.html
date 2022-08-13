@@ -12,8 +12,8 @@
 </head>
 <body>
     <div id="app">
-        <!-- 報名表 -->
-        <div class="container minsize" v-show="register_is_display">
+        <!-- 電腦版報名表 -->
+        <div id="computer_version" class="container minsize" v-show="register_is_display && computer_is_display">
             <div style="height: 10vh;"></div>
             <div class="row">
                 <div class="col-4" style="text-align: center;">
@@ -71,6 +71,82 @@
                     <button type="button" class="btn btn-primary" style="margin-right: 10px;" v-on:click.prevent="submit"><strong>產生賽程表</strong></button>
                     <button type="button" class="btn btn-danger" style="margin-left: 10px;" v-on:click.prevent="remove_All()"><strong>全部刪除</strong></button>
                 </div>
+            </div>
+        </div>
+
+        <!-- 手機板版報名表 -->
+        <div id="phone_version" class="container minsize" v-show="register_is_display && phone_is_display">
+            <div style="height: 10vh;"></div>
+            <div class="row" style="text-align: center;">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h2><strong>賽程表產生器</strong></h2>
+                    <hr>
+                    <h5 style="color: gray; text-align: left;">
+                        <strong>
+                            說明：<br>
+                            下方輸入參賽者名稱，<br>
+                            名字限制至多10個字元，<br>
+                            參賽者至多<span style="color: red;">{{max_people}}</span>人，<br>
+                            輸入完成後請確認所有參賽者皆完成報名，<br>
+                            點擊「產生賽程表」自動生成賽程表。<br><br>
+                            賽程表畫面點擊獲勝的參賽者可繼續晉級。<br>
+                            綠色：已獲勝的參賽者。<br>
+                            紅色：被淘汰的參賽者。<br>
+                        </strong>
+                    </h5>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div style="height: 5rem;"></div>
+            <div class="row" style="text-align: center;">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h2><strong>最大參賽人數</strong></h2>
+                    <hr>
+                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group" style="width: 80%;">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked v-on:click="change_people(2)">
+                        <label class="btn btn-outline-secondary" for="btnradio1"><strong>2</strong></label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" v-on:click="change_people(4)">
+                        <label class="btn btn-outline-secondary" for="btnradio2"><strong>4</strong></label>
+                        
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" v-on:click="change_people(8)">
+                        <label class="btn btn-outline-secondary" for="btnradio3"><strong>8</strong></label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" v-on:click="change_people(16)">
+                        <label class="btn btn-outline-secondary" for="btnradio4"><strong>16</strong></label>
+                    </div>
+                    <div style="height: 5rem;"></div>
+                    <h2><strong>建議參賽人數</strong></h2>
+                    <hr>
+                    <h3 style="color: gray;">{{suggest_people}}</h3>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div style="height: 5rem;"></div>
+            <div class="row" style="text-align: center;">
+                <div class="col-2"></div>
+                <div class="col-8">
+                    <h1><strong>請輸入參賽者名稱</strong></h1>
+                    <div style="height: 2vh;"></div>
+                    <input id="inp" type="text" autocomplete="off" v-model="player_name" v-on:keyup.enter="onEnter">
+                    <div style="height: 4vh;"></div>
+                    <ol class="list-group list-group-numbered" style="text-align: left;">
+                        <li class="list-group-item" :class="[item.arrColor]" v-for="item in registered" style="font-size: 25px;">
+                            <span :class="[item.arrColor]" style="font-size: 25px;"><strong>{{item.name}}</strong></span>
+                            <button type="button" class="btn btn-danger" style="float: right" v-if="item.confirm" v-on:click.prevent="remove_item(item)">刪除</button>
+                            <button type="button" class="btn btn-success" style="float: right; margin-right: 10px;" v-if="item.confirm" v-on:click.prevent="confirm_item(item)">確認</button>
+                            <button type="button" class="btn btn-secondary" style="float: right;" v-else v-on:click.prevent="confirm_item(item)">取消</button>
+                        </li>
+                    </ol>
+                    
+                    <div style="height: 2rem"></div>
+                    <button type="button" class="btn btn-primary" style="margin-right: 10px;" v-on:click.prevent="submit"><strong>產生賽程表</strong></button>
+                    <button type="button" class="btn btn-danger" style="margin-left: 10px;" v-on:click.prevent="remove_All()"><strong>全部刪除</strong></button>
+                    <div style="height: 10vh;"></div>
+                </div>
+                <div class="col-2"></div>
             </div>
         </div>
 
@@ -176,7 +252,9 @@
             ],
             promotion4: [{name: '', status: 0}],
             register_is_display: true,
-            schedule_is_display: false
+            schedule_is_display: false,
+            computer_is_display: true,
+            phone_is_display: false
         },
         methods: {
             change_people: function(num){
@@ -490,7 +568,45 @@
                     alert("還有參賽者尚未確認喔 ！");
                 }
             }
-        }
+        },
+        mounted(){
+            setInterval(() => {
+                var mobile_flag = isMobile(); // true爲PC端，false爲手機端
+                if(mobile_flag){
+                    this.computer_is_display = false;
+                    this.phone_is_display = true;
+                }
+                else{
+                    this.computer_is_display = true;
+                    this.phone_is_display = false;
+                }
+            }, 100)
+        },
     });
 
+    function isMobile() {
+        var userAgentInfo = navigator.userAgent;
+
+        var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+        var mobile_flag = false;
+
+        //根據userAgent判斷是否是手機
+        for (var v = 0; v < mobileAgents.length; v++) {
+            if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                mobile_flag = true;
+                break;
+            }
+        }
+
+        var screen_width = window.screen.width;
+        var screen_height = window.screen.height;    
+
+        //根據屏幕分辨率判斷是否是手機
+        if(screen_width < 500 && screen_height < 800){
+            mobile_flag = true;
+        }
+
+        return mobile_flag;
+    }
 </script>
